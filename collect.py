@@ -78,20 +78,20 @@ def parse(page_html, now):
         strings = [clean(x) for x in blk.stripped_strings if clean(x)]
         head = strings[:8]
         media = next((m for s_ in head for m in MEDIA if s_ == m or s_.startswith(m + ' ')), '')
-        if not media:
-            continue
         text = ' '.join(strings)
         link = next((x.get('href') for x in blk.find_all('a') if art_id(x.get('href', ''))), '')
         href = t.get('href', '')
         i = art_id(link) or art_id(href) or href
         if not i or i in res:
             continue
-        pg = PAGE.search(' '.join(head))
+        pg = PAGE.search(' '.join(head)) if media else None
         res[i] = {'id': i, 'title': html.unescape(title), 'media': media, 'url': href or link, 'link': link,
                   'pub_dt': when(text, now), 'section': '지면' if pg else '온라인', 'page': pg.group(1) if pg else ''}
     return res
 
-def scrape(url, start, now, pages=10, label=''):
+def scrape(url, start, now, pages=15, label=''):
+    """검색 결과를 쪽별로 읽는다. 지정 16개 매체가 한 건도 없는 쪽이 있어도 계속 넘어가고,
+    결과가 끝났거나 시간이 보고서 범위보다 오래되면 멈춘다."""
     out = {}
     for k in range(pages):
         u = url + ('&' if '?' in url else '?') + f'start={k * 10 + 1}'
@@ -101,20 +101,20 @@ def scrape(url, start, now, pages=10, label=''):
             print(label, '요청 실패', e); break
         if r.status_code != 200:
             print(label, '응답 코드', r.status_code); break
-        items = parse(r.text, now)
-        if k == 0 and (os.environ.get('FORCE_PRINT') or not items):
+        raw = parse(r.text, now)
+        items = {i: x for i, x in raw.items() if x['media']}
+        if k == 0 and (os.environ.get('FORCE_PRINT') or not raw):
             os.makedirs('data', exist_ok=True)
             open('data/debug_naver.html', 'w', encoding='utf-8').write(re.sub(r'<(script|style)[\s\S]*?</\1>', '', r.text)[:200000])
-        if not items:
+        if not raw:
             sp = BeautifulSoup(r.text, 'html.parser')
             print(f'  [진단] 페이지 제목: {sp.title.get_text(strip=True) if sp.title else "(없음)"}')
-            print(f'  [진단] 링크 {len(sp.find_all("a"))}개 · 네이버뉴스 링크 {len(sp.select("a[href*=\"news.naver.com\"]"))}개 · 제목링크(.tit) {len(sp.select("a.news_tit, a[data-heatmap-target=\".tit\"]"))}개 · 본문 속 "네이버뉴스" {r.text.count("네이버뉴스")}회 · "면" {r.text.count("면")}회')
-            print('  [진단] 앞부분 링크 글자:', [clean(a.get_text())[:25] for a in sp.find_all('a')[:8]])
-        print(f'{label} {k + 1}쪽: 기사 {len(items)}건 (HTML {len(r.text)}자)')
-        if not items:
+            print(f'  [진단] 링크 {len(sp.find_all("a"))}개 · 제목링크 {len(sp.select("a.news_tit, a[data-heatmap-target=\".tit\"]"))}개')
+        print(f'{label} {k + 1}쪽: 읽은 기사 {len(raw)}건 중 지정 매체 {len(items)}건')
+        if not raw:
             break
         out.update(items)
-        known = [x['pub_dt'] for x in items.values() if x['pub_dt']]
+        known = [x['pub_dt'] for x in raw.values() if x['pub_dt']]
         if known and max(known) < start - dt.timedelta(hours=1):
             break
         time.sleep(2)
