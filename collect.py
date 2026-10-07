@@ -85,7 +85,7 @@ def parse(page_html, now):
         if not i or i in res:
             continue
         pg = PAGE.search(' '.join(head)) if media else None
-        res[i] = {'id': i, 'title': html.unescape(title), 'media': media, 'url': href or link, 'link': link,
+        res[i] = {'head': head, 'id': i, 'title': html.unescape(title), 'media': media, 'url': href or link, 'link': link,
                   'pub_dt': when(text, now), 'section': '지면' if pg else '온라인', 'page': pg.group(1) if pg else ''}
     return res
 
@@ -111,8 +111,13 @@ def scrape(url, start, now, pages=15, label=''):
             print(f'  [진단] 페이지 제목: {sp.title.get_text(strip=True) if sp.title else "(없음)"}')
             print(f'  [진단] 링크 {len(sp.find_all("a"))}개 · 제목링크 {len(sp.select("a.news_tit, a[data-heatmap-target=\".tit\"]"))}개')
         print(f'{label} {k + 1}쪽: 읽은 기사 {len(raw)}건 중 지정 매체 {len(items)}건')
+        if k == 0:
+            for x in list(raw.values())[:3]:
+                print('  [샘플]', x['title'][:20], '| 매체:', x['media'] or '(지정 외)', '| 시간:', x['pub_dt'].strftime('%m-%d %H:%M') if x['pub_dt'] else '(못 읽음)', '| 앞글자:', x['head'][:5])
         if not raw:
             break
+        for x in items.values():
+            x.pop('head', None)
         out.update(items)
         known = [x['pub_dt'] for x in raw.values() if x['pub_dt']]
         if known and max(known) < start - dt.timedelta(hours=1):
@@ -136,9 +141,11 @@ def main():
             found[i] = x
         data['printed_at'] = now.isoformat(timespec='seconds')
     tol = dt.timedelta(hours=1)
+    drop = {'시간 범위 밖': 0}
     for i, x in found.items():
         pub = x.pop('pub_dt') or now
         if not (start - tol <= pub < end + tol):
+            drop['시간 범위 밖'] += 1
             continue
         x['pub'] = pub.isoformat(timespec='minutes')
         old = by.get(i)
@@ -146,6 +153,7 @@ def main():
             by[i] = x
         elif x['section'] == '지면':
             old['section'], old['page'] = '지면', x['page'] or old.get('page', '')
+    print(f'범위 {start:%m-%d %H:%M} ~ {end:%m-%d %H:%M} / 읽은 지정 매체 기사 {len(found)}건, {drop}')
     data.update({'from': start.isoformat(), 'to': end.isoformat(), 'updated': now.strftime('%m-%d %H:%M'),
                  'items': sorted(by.values(), key=lambda x: x['pub'])})
     os.makedirs('data', exist_ok=True)
