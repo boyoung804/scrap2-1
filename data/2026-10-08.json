@@ -12,9 +12,45 @@
    "keyword": "문체부",
    "description": "",
    "pub": "2026-10-07T14:45+09:00"
+  },
+  {
+   "id": "https://news.naver.com/main/static/channelPromotion.html",
+   "title": "언론사 선정 언론사가 선정한 주요기사 혹은 심층기획 기사입니다. 네이버 메인에서 보고 싶은 언론사 를 구독하세요.",
+   "media": "파이낸셜뉴스",
+   "url": "https://news.naver.com/main/static/channelPromotion.html",
+   "link": "https://news.naver.com/main/static/channelPromotion.html",
+   "section": "온라인",
+   "page": "",
+   "keyword": "문화체육관광부",
+   "description": "",
+   "pub": "2026-10-07T15:23+09:00"
+  },
+  {
+   "id": "119-0003140474",
+   "title": "데일리안 새 창 열림",
+   "media": "파이낸셜뉴스",
+   "url": "https://media.naver.com/press/119",
+   "link": "https://n.news.naver.com/mnews/article/119/0003140474?sid=100",
+   "section": "온라인",
+   "page": "",
+   "keyword": "문화체육관광부",
+   "description": "",
+   "pub": "2026-10-07T15:23+09:00"
+  },
+  {
+   "id": "014-0005586205",
+   "title": "파이낸셜뉴스 새 창 열림",
+   "media": "파이낸셜뉴스",
+   "url": "https://media.naver.com/press/014",
+   "link": "https://n.news.naver.com/mnews/article/014/0005586205?sid=102",
+   "section": "온라인",
+   "page": "",
+   "keyword": "문체부",
+   "description": "",
+   "pub": "2026-10-07T15:23+09:00"
   }
  ],
  "from": "2026-10-07T07:00:00+09:00",
  "to": "2026-10-08T07:00:00+09:00",
- "updated": "10-07 14:59"
+ "updated": "10-07 15:24"
 }
