@@ -12,7 +12,7 @@ KST = dt.timezone(dt.timedelta(hours=9))
 UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36'
 MEDIA = ['조선일보', '중앙일보', '동아일보', '한국일보', '경향신문', '한겨레', '매일경제', '한국경제', '서울경제',
          '파이낸셜뉴스', '이데일리', '세계일보', '국민일보', '서울신문', '전자신문', '머니투데이']
-QUERY = '문화체육관광부|문체부'
+QUERY = (os.environ.get('SEARCH_QUERY') or '문화체육관광부|문체부').strip()  # GitHub 저장소 변수 SEARCH_QUERY 로 바꿀 수 있음
 BASE = 'https://search.naver.com/search.naver?where=news&sort=1&query=' + quote(QUERY)
 REL = re.compile(r'(\d+)\s*(분|시간|일|주)\s*전')
 ABS = re.compile(r'(\d{4})\.(\d{1,2})\.(\d{1,2})\.')
