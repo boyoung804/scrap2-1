@@ -41,52 +41,47 @@ def when(text, now):
         return dt.datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)), 12, tzinfo=KST)
     return None
 
-NOISE = ('새 창 열림', '언론사 선정', '네이버뉴스', '구독하세요', '관련도순')
+BLIND = '새 창 열림'
 
 def clean(t):
     return re.sub(r'\s+', ' ', t or '').strip()
 
+def txt(el, sep=' '):
+    return clean((el.get_text(sep) if el is not None else '').replace(BLIND, ''))
+
 def parse(page_html, now):
-    """검색 결과 한 건씩 읽기: 제목 링크를 먼저 찾고, 그 기사 하나만 담긴 가장 큰 덩어리에서 매체·면수·시간을 읽는다."""
+    """네이버 뉴스 검색 결과(2026-10 화면 구조) 읽기.
+    제목 링크(data-heatmap-target=".tit")마다, 그 기사 하나만 담긴 가장 큰 덩어리에서
+    매체(profile-info-title-text), 시간·면수(profile-info-subtext), 네이버뉴스 링크(.nav)를 읽는다."""
     soup, res = BeautifulSoup(page_html, 'html.parser'), {}
-    ts = soup.select('a.news_tit, a[data-heatmap-target=".tit"]')
-    if not ts:
-        ts = [x.find_parent('a') for x in soup.select('span[class*="headline"]') if x.find_parent('a')]
-    if not ts:  # 마지막 수단: 네이버뉴스 링크 주변에서 제목 후보를 찾는다
-        for a in soup.select('a[href*="news.naver.com"]'):
-            node = a
-            for _ in range(10):
-                node = node.parent
-                if node is None:
-                    break
-                c = [x for x in node.find_all('a') if len(clean(x.get_text())) >= 8 and not any(n in x.get_text() for n in NOISE)]
-                if c and (REL.search(node.get_text(' ')) or ABS.search(node.get_text(' '))):
-                    ts.append(c[0]); break
+    ts = soup.select('a[data-heatmap-target=".tit"], a.news_tit')
     tset = {id(x) for x in ts}
     for t in ts:
         node, blk = t, None
         while node.parent is not None:
             node = node.parent
-            if sum(1 for x in node.find_all('a') if id(x) in tset) > 1 or len(node.get_text(' ', strip=True)) > 1500:
+            if sum(1 for x in node.find_all('a') if id(x) in tset) > 1 or len(node.get_text(' ', strip=True)) > 3000:
                 break
             blk = node
         if blk is None:
             continue
-        title = clean(t.get_text(' ', strip=True))
-        if len(title) < 5 or any(n in title for n in NOISE):
+        title = txt(t.select_one('[class*="headline"]'), '') or txt(t, '')
+        if len(title) < 3:
             continue
-        strings = [clean(x) for x in blk.stripped_strings if clean(x)]
-        head = strings[:8]
-        media = next((m for s_ in head for m in MEDIA if s_ == m or s_.startswith(m + ' ')), '')
-        text = ' '.join(strings)
-        link = next((x.get('href') for x in blk.find_all('a') if art_id(x.get('href', ''))), '')
+        mname = txt(blk.select_one('[class*="profile-info-title-text"]'))
+        metas = [txt(x) for x in blk.select('[class*="profile-info-subtext"]')]
+        meta = ' '.join(metas)
+        media = mname if mname in MEDIA else ''
+        nav = blk.select_one('a[data-heatmap-target=".nav"]')
+        link = nav.get('href', '') if nav else ''
         href = t.get('href', '')
         i = art_id(link) or art_id(href) or href
         if not i or i in res:
             continue
-        pg = PAGE.search(' '.join(head)) if media else None
-        res[i] = {'head': head, 'id': i, 'title': html.unescape(title), 'media': media, 'url': href or link, 'link': link,
-                  'pub_dt': when(text, now), 'section': '지면' if pg else '온라인', 'page': pg.group(1) if pg else ''}
+        pg = PAGE.search(meta) if media else None
+        res[i] = {'head': [mname] + metas, 'id': i, 'title': html.unescape(title), 'media': media,
+                  'url': href or link, 'link': link, 'pub_dt': when(meta, now),
+                  'section': '지면' if pg else '온라인', 'page': pg.group(1) if pg else ''}
     return res
 
 def scrape(url, start, now, pages=15, label=''):
@@ -129,7 +124,7 @@ def main():
     d, start, end, now = report_window()
     path = f'data/{d}.json'
     data = json.load(open(path, encoding='utf-8')) if os.path.exists(path) else {'date': str(d), 'items': []}
-    by = {x['id']: x for x in data['items'] if len(x['title']) >= 5 and not any(n in x['title'] for n in NOISE)}  # 잘못 읽힌 옛 항목 정리
+    by = {x['id']: x for x in data['items'] if len(x['title']) >= 3 and BLIND not in x['title'] and '언론사 선정' not in x['title']}  # 잘못 읽힌 옛 항목 정리
     found = scrape(BASE, start, now, label='전체')
     last = data.get('printed_at')
     pu = os.environ.get('PRINT_SEARCH_URL', '').strip()
