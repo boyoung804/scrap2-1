@@ -60,9 +60,9 @@ const nk=s=>String(s==null?'':s).normalize('NFC').replace(/[^0-9A-Za-z가-힣]/g
 const sleep=ms=>new Promise(r=>setTimeout(r,ms)),GB='https://generativelanguage.googleapis.com/v1beta/';
 const MEDIA=['조선일보','중앙일보','동아일보','한국일보','경향신문','한겨레','매일경제','한국경제','서울경제','파이낸셜뉴스','이데일리','세계일보','국민일보','서울신문','전자신문','머니투데이'];
 const DEF_SECS='문화예술 : 공연·전시·영화·음악·문학·출판·미술 등\n전통유산 : 문화유산·국가유산·전통문화·박물관 등\n체육 : 스포츠·체육 정책, 대회, 선수\n관광 : 관광·여행·지역관광 정책과 산업\n기타 보도 : 위에 해당하지 않는 문화·체육·관광 관련 소식\n오피니언 : 사설·칼럼·기고';
-let CATS=null,COLL=[],COLLOK=false,OVR={},DATE='',ROWS=[],FILES=[],RUN=false,ctl=null,CUR='',BAD=new Set();
+let CATS=null,COLL=[],COLLOK=false,OVR={},DATE='',ROWS=[],FILES=[],RUN=false,ctl=null,CUR='',BAD=new Set(),BUSY={};
 const todayStr=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())};
-const LSg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},LSs=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const LSg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},LSs=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};CUR=LSg('gcur')||'';
 function msg(t,c){const m=$('msg');m.textContent=t;m.className='msg '+c;m.style.display='block'}
 /* 설정 */
 function cfg(){const secs=[],desc={};($('secs').value||'').split('\n').forEach(l=>{const i=l.indexOf(':'),n=(i<0?l:l.slice(0,i)).trim();if(n){secs.push(n);desc[n]=i<0?'':l.slice(i+1).trim()}});return{org:$('org').value.trim(),secs,desc}}
@@ -96,17 +96,26 @@ async function setKey(){const v=$('ak').value.trim();
   $('kb').disabled=false}
 async function ask(parts,sig){
   const L=models();if(!key()||!L.length)throw{fatal:'Gemini 키를 먼저 저장해주세요.'};
-  for(const m of (CUR&&!BAD.has(CUR)?[CUR]:[]).concat(L.filter(x=>x!==CUR&&!BAD.has(x)))){
-    for(let t=0;t<4;t++){let r;
-      try{r=await fetch(GB+'models/'+m+':generateContent',{method:'POST',signal:sig,headers:{'content-type':'application/json','x-goog-api-key':key()},body:JSON.stringify({contents:[{role:'user',parts}],generationConfig:{temperature:0,responseMimeType:'application/json',maxOutputTokens:8000}})})}
-      catch(e){if(sig&&sig.aborted)throw{cancel:1};await sleep(1500);continue}
-      if(r.ok){const j=await r.json(),txt=(((j.candidates||[])[0]||{}).content&&(j.candidates[0].content.parts||[]).map(x=>x.text||'').join(''))||'',mm=txt.replace(/```json|```/g,'').match(/[\{\[][\s\S]*[\}\]]/);
-        try{if(mm){const o=JSON.parse(mm[0]);CUR=m;return o}}catch(e){}await sleep(1000);continue}
+  for(let round=0;round<8;round++){
+    const order=(CUR&&L.includes(CUR)?[CUR]:[]).concat(L.filter(x=>x!==CUR)).filter(m=>!BAD.has(m));
+    if(!order.length)break;
+    for(const m of order){
+      if((BUSY[m]||0)>Date.now())continue;
+      if(sig&&sig.aborted)throw{cancel:1};
+      const c=new AbortController(),tm=setTimeout(()=>c.abort(),90000),onAb=()=>c.abort();if(sig)sig.addEventListener('abort',onAb);
+      let r=null;
+      try{r=await fetch(GB+'models/'+m+':generateContent',{method:'POST',signal:c.signal,headers:{'content-type':'application/json','x-goog-api-key':key()},body:JSON.stringify({contents:[{role:'user',parts}],generationConfig:{temperature:0,responseMimeType:'application/json',maxOutputTokens:8000}})})}
+      catch(e){if(sig&&sig.aborted)throw{cancel:1}}
+      finally{clearTimeout(tm);if(sig)sig.removeEventListener('abort',onAb)}
+      if(!r){BUSY[m]=Date.now()+45000;continue}
+      if(r.ok){let o=null;try{const j=await r.json(),txt=(((j.candidates||[])[0]||{}).content&&(j.candidates[0].content.parts||[]).map(x=>x.text||'').join(''))||'',mm=txt.replace(/```json|```/g,'').match(/[\{\[][\s\S]*[\}\]]/);if(mm)o=JSON.parse(mm[0])}catch(e){}
+        if(o){CUR=m;LSs('gcur',m);return o}BUSY[m]=Date.now()+20000;continue}
       let b='';try{b=await r.text()}catch(e){}
       if(r.status===401||r.status===403||(r.status===400&&/API key/i.test(b)))throw{fatal:'API 키가 올바르지 않습니다. 키를 다시 저장해주세요.'};
-      if(r.status===404||(r.status===429&&/limit: ?0|per ?day/i.test(b))){BAD.add(m);break}
-      if(r.status===429||r.status>=500){const w=Math.min(15*(t+1),60);for(let s=w;s>0;s--){if(sig&&sig.aborted)throw{cancel:1};msg('Google가 바빠 잠시 기다립니다… '+s+'초','ok');await sleep(1000)}continue}
-      break}}
+      if(r.status===404||(r.status===429&&/limit: ?0|per ?day/i.test(b))){BAD.add(m);continue}
+      BUSY[m]=Date.now()+45000}
+    const nxt=Math.min(...order.map(m=>BUSY[m]||0)),w=Math.min(30,Math.max(3,Math.ceil((nxt-Date.now())/1000)));
+    for(let k=w;k>0;k--){if(sig&&sig.aborted)throw{cancel:1};msg('모든 모델이 바빠 잠시 기다립니다… '+k+'초','ok');await sleep(1000)}}
   throw{fatal:'사용할 수 있는 모델이 없거나 모두 막혀 있습니다. 잠시 뒤 다시 시도해주세요.'}}
 /* 파일 */
 function fileKey(n){return nk(String(n).replace(/\.[^.]+$/,'').replace(/^\d+_/,'').replace(/_\d{4}-\d{2}-\d{2}$/,''))}
