@@ -30,7 +30,7 @@ details{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}summar
 .box{border:1px solid var(--tx);padding:8px 12px}
 .cat{display:inline-block;margin:10px 0 4px;padding:0 8px;border:1px dotted var(--mute);font-weight:700;font-size:13px}.cat:before{content:"☑ "}
 .it{margin:0 0 8px}.ti{font-weight:700;font-size:14.5px}.ti span{font-weight:400;color:var(--mute)}.ti a{color:inherit;text-decoration:none}.ti a:hover{text-decoration:underline}
-.it select{margin:3px 0 0 14px;padding:2px 4px;font-size:11.5px}.rw{display:flex;gap:8px;align-items:flex-start}.rw .tx{flex:1;min-width:0}.rw .dx,.rw .g{flex:none;margin-left:auto}.ck{margin-top:5px;accent-color:#1f3864;flex:none}
+.it select{margin:3px 0 0 14px;padding:2px 4px;font-size:11.5px}.rw{display:flex;gap:8px;align-items:flex-start}.rw .tx{flex:1;min-width:0}.rw .dx,.rw .g,.rw .bt{flex:none;margin-left:auto}.bt{display:flex;gap:4px}.rm{color:#b3261e}.ck{margin-top:5px;accent-color:#1f3864;flex:none}
 #abar{position:sticky;top:0;z-index:5;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;display:none;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:12.5px}#abar select{padding:3px 6px;font-size:12.5px}
 .dx{background:none;color:var(--mute);padding:0 5px;margin-left:4px;font-size:16px;line-height:1;font-weight:400;opacity:.4}.dx:hover{opacity:1;color:#b3261e}
 .empty{color:var(--mute);font-size:12.5px;padding:2px 0}
@@ -44,7 +44,7 @@ details{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}summar
 <span style="flex:1"></span><button class="g" onclick="xl()">엑셀로 저장</button><button class="g" onclick="window.print()">인쇄 / PDF</button></div>
 <div class="hint" id="st"></div></div>
 <div class="panel">
-<div class="row"><label>기사 엑셀 <input type="file" id="fx" accept=".xlsx,.xls"></label><label>이미지 zip(②에만 필요) <input type="file" id="fz" accept=".zip"></label></div>
+<div class="row"><label>기사 엑셀 <input type="file" id="fx" accept=".xlsx,.xls"></label><label>이미지 zip(②에만 필요) <input type="file" id="fz" accept=".zip"></label><button class="g sm" onclick="resetExcel()" title="엑셀로 불러온 2. 주요 이슈만 비웁니다 (1. 관련 보도는 그대로)">주요 이슈 초기화</button></div>
 <div class="row"><button class="p" id="b1" onclick="runCls(false)">① 제목으로만 분류</button><button class="g" id="b2" onclick="runCls(true)">② 이미지로 못 가린 기사 분석 (①을 먼저 안 했으면 제목부터)</button><button class="g" id="bs" onclick="stop()" style="display:none">중지</button></div>
 <div class="msg" id="msg"></div><div class="bar" id="bar"><i id="bi"></i></div>
 <details id="kd"><summary>Gemini 키 · <span id="kn"></span></summary>
@@ -55,7 +55,7 @@ details{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}summar
 <div id="secl"></div>
 <div class="row"><button class="g sm" onclick="secRow();saveCfg()">+ 구분 추가</button></div>
 <div class="hint">설명을 적으면 분류가 더 정확해집니다. 이름에 '오피니언'이 들어가면 사설·칼럼이 모입니다.</div></details></div>
-<div id="abar"><span><b id="sn">0</b>건 선택</span><button class="g sm" id="bo" onclick="act('out',[...SEL].filter(k=>!EXK.has(k)))">제외로 이동</button><button class="g sm" id="bi" onclick="act('inc',[...SEL].filter(k=>EXK.has(k)))">포함으로 이동</button><select id="bsec" onchange="act('mv',[...SEL].filter(k=>k[0]==='a'),this.value);this.value=''"></select><button class="g sm" onclick="SEL.clear();render()">선택 해제</button></div>
+<div id="abar"><span><b id="sn">0</b>건 선택</span><button class="g sm" id="bo" onclick="act('out',[...SEL].filter(k=>!EXK.has(k)))">제외로 이동</button><button class="g sm" id="bi" onclick="act('inc',[...SEL].filter(k=>EXK.has(k)))">포함으로 이동</button><select id="bsec" onchange="act('mv',[...SEL].filter(k=>k[0]==='a'),this.value);this.value=''"></select><button class="g sm rm" id="bd" onclick="delSel()">삭제</button><button class="g sm" onclick="SEL.clear();render()">선택 해제</button></div>
 <div id="rep"></div></div>
 <script>
 const $=id=>document.getElementById(id),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -64,7 +64,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms)),GB='https://generativelanguage.
 const MEDIA=['조선일보','중앙일보','동아일보','한국일보','경향신문','한겨레','매일경제','한국경제','서울경제','파이낸셜뉴스','이데일리','세계일보','국민일보','서울신문','전자신문','머니투데이'];
 const DEF_ROWS=[['문화예술','공연·전시·영화·음악·문학·출판·미술 등'],['전통유산','문화유산·국가유산·전통문화·박물관 등'],['체육','스포츠·체육 정책, 대회, 선수'],['관광','관광·여행·지역관광 정책과 산업'],['기타 보도','위에 해당하지 않는 문화·체육·관광 관련 소식'],['오피니언','사설·칼럼·기고']];
 const DEF_SECS_OLD='문화예술 : 공연·전시·영화·음악·문학·출판·미술 등\n전통유산 : 문화유산·국가유산·전통문화·박물관 등\n체육 : 스포츠·체육 정책, 대회, 선수\n관광 : 관광·여행·지역관광 정책과 산업\n기타 보도 : 위에 해당하지 않는 문화·체육·관광 관련 소식\n오피니언 : 사설·칼럼·기고';
-let CATS=null,COLL=[],COLLOK=false,OVR={},SEL=new Set(),EXK=new Set(),DATE='',ROWS=[],FILES=[],RUN=false,ctl=null,CUR='',BAD=new Set(),BUSY={};
+let CATS=null,COLL=[],COLLOK=false,OVR={},SEL=new Set(),EXK=new Set(),DELS=new Set(),DATE='',ROWS=[],FILES=[],RUN=false,ctl=null,CUR='',BAD=new Set(),BUSY={};
 const todayStr=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())};
 const LSg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},LSs=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};CUR=LSg('gcur')||'';
 function msg(t,c){const m=$('msg');m.textContent=t;m.className='msg '+c;m.style.display='block'}
@@ -80,7 +80,7 @@ function saveCfg(){LSs('cfg3',JSON.stringify({org:$('org').value,rows:[...docume
 /* 날짜·자료 불러오기 */
 function shift(n){const d=new Date($('rdate').value+'T00:00:00');if(isNaN(d))return;d.setDate(d.getDate()+n);const p=x=>String(x).padStart(2,'0');$('rdate').value=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());load()}
 async function getJ(p){try{const r=await fetch(p+'?t='+Date.now());return r.ok?await r.json():null}catch(e){return null}}
-function loadOv(){try{OVR=JSON.parse(LSg('ov:'+DATE)||'{}')}catch(e){OVR={}}}
+function loadOv(){try{OVR=JSON.parse(LSg('ov:'+DATE)||'{}')}catch(e){OVR={}}try{DELS=new Set(JSON.parse(LSg('del:'+DATE)||'[]'))}catch(e){DELS=new Set()}}
 async function load(){DATE=$('rdate').value.trim()||todayStr();loadOv();
   try{CATS=JSON.parse(LSg('cats:'+DATE)||'null')}catch(e){CATS=null}
   const k=await getJ('data/'+DATE+'.json');COLL=k&&k.items||[];COLLOK=!!k;
@@ -180,13 +180,13 @@ async function runCls(withImg){
     }
     if(withImg){const ks=items.map(x=>nk(x.media+x.title)),used=new Set(),map={};
       FILES.forEach((f,fi)=>{const k=fileKey(f.name);let j=ks.findIndex((x,j)=>!used.has(j)&&x===k);if(j<0&&k.length>=10)j=ks.findIndex((x,j)=>!used.has(j)&&x.length>=10&&(x.startsWith(k)||k.startsWith(x)));if(j>=0){used.add(j);map[j]=fi}});
-      const un=items.filter(x=>!x.section&&map[x.i]!==undefined);let d2=0;
+      const un=items.filter(x=>!x.section&&map[x.i]!==undefined&&!DELS.has(dk(x)));let d2=0;
       for(let s=0;s<un.length;s+=6){const part=un.slice(s,s+6);msg('제목으로 못 가린 기사 이미지 분석 중… '+d2+' / '+un.length,'ok');
         const parts=[{text:'아래에 신문 기사 이미지 '+part.length+'장이 [이미지 1]… 순서로 주어집니다. 글자를 읽고 이미지마다 JSON {"items":[{"k":이미지 번호,"section":"구분 이름"}]} 한 개만 출력하세요. 구분 목록:\n'+c.secs.map(s=>'- '+s+(c.desc[s]?': '+c.desc[s]:'')).join('\n')+'\nsection은 목록의 이름을 글자 그대로 쓰고, 알 수 없으면 빈 문자열로 두세요.'}];
         for(let k=0;k<part.length;k++){parts.push({text:'[이미지 '+(k+1)+'] 기사 제목: '+part[k].title});parts.push({inline_data:{mime_type:'image/jpeg',data:await imgB64(FILES[map[part[k].i]].blob)}})}
         try{const got={};arrOf(await ask(parts,sig)).forEach((x,p)=>{const k=parseInt(x.k,10);got[(k>=1&&k<=part.length)?k:p+1]=x});part.forEach((x,p)=>{const g=got[p+1];if(g&&c.secs.includes(g.section))x.section=g.section})}catch(e){if(e&&(e.cancel||e.fatal))throw e}
         d2+=part.length}
-      note=' · 이미지 분석 '+un.length+'건'+(items.filter(x=>!x.section).length-un.length>0?' (이미지를 찾지 못한 기사 있음)':'')}
+      note=' · 이미지 분석 '+un.length+'건'+(items.filter(x=>!x.section&&!DELS.has(dk(x))).length-un.length>0?' (이미지를 찾지 못한 기사 있음)':'')}
     summarize(items,c.secs);
     CATS={org:c.org,secs:c.secs,items,updated:new Date().toTimeString().slice(0,5)};LSs('cats:'+DATE,JSON.stringify(CATS));if(!reuse){OVR={};SEL.clear();LSs('ov:'+DATE,'{}')}
     msg((reuse?'이어서 분석 완료: ':'분류 완료: ')+N+'건'+note+' · 분류 미정 '+items.filter(x=>!x.section).length+'건','ok')}
@@ -206,30 +206,52 @@ function gsort(L,full){const b={},K=a=>a.g||('s'+a.i);
   return L.sort((x,y)=>{const kx=K(x),ky=K(y);if(kx!==ky){const p=b[kx],q=b[ky];return full?(p.i-q.i):(q.sc-p.sc||p.i-q.i)}return(y.sc||0)-(x.sc||0)||x.i-y.i})}
 function collSplit(cm){const MO=MEDIA.map(nk),mi=c=>{const i=MO.indexOf(nk(c.media));return i<0?99:i},pn=c=>parseInt((String(c.page||'').match(/(\d+)/)||[0,999])[1],10);
   const by=(x,y)=>mi(x)-mi(y)||pn(x)-pn(y)||String(x.pub).localeCompare(String(y.pub));
-  const L=COLL.map(c=>{const a=cm&&cm.get(c);return a?Object.assign({},c,{title:a.title,page:a.page||c.page,section:'지면',url:a.url||c.url}):c}),gone=c=>(OVR['c'+c.id]||{}).out;
+  const L=COLL.filter(c=>!DELS.has('c:'+c.id)).map(c=>{const a=cm&&cm.get(c);return a?Object.assign({},c,{title:a.title,page:a.page||c.page,section:'지면',url:a.url||c.url}):c}),gone=c=>(OVR['c'+c.id]||{}).out;
   return{p:L.filter(c=>!gone(c)&&c.section==='지면').sort(by),o:L.filter(c=>!gone(c)&&c.section!=='지면').sort(by),x:L.filter(gone).sort(by)}}
 function collHtml(sp){const blk=(n,a)=>'<div class="cat">'+n+' · '+a.length+'건</div>'+(a.length?a.map(c=>itemC(c,0)).join(''):'<div class="empty">해당 기사 없음</div>');return blk('지면',sp.p)+blk('온라인',sp.o)}
 /* 보기 */
-const O=k=>OVR[k]||{};
+const O=k=>OVR[k]||{},dk=a=>'a:'+nk(a.media+a.title);
 function view(){const full=document.querySelector('input[name=mode]:checked').value==='full',V={secs:{},unk:[],ex:[],cm:new Map()};
   if(!CATS)return V;CATS.secs.forEach(s=>V.secs[s]=[]);
+  const MC=new Map();if(COLLOK)CATS.items.forEach(a=>{const m=matchColl(a);if(m)MC.set(a.i,m)});
+  let S=null;
+  if(!full){/* 요약본: 같은 이슈(g)는 점수가 가장 높은 1건만, 구분마다 5점 이상 최대 5건 */
+    const el=CATS.items.filter(a=>!DELS.has(dk(a))&&!O('a'+a.i).out&&!MC.has(a.i)),rep={};
+    el.forEach(a=>{if(a.g){const r=rep[a.g];if(!r||(a.sc||0)>(r.sc||0)||((a.sc||0)===(r.sc||0)&&a.i<r.i))rep[a.g]=a}});
+    const ok=el.filter(a=>!a.g||rep[a.g]===a);S=new Set();
+    CATS.secs.forEach(s=>ok.filter(a=>(O('a'+a.i).sec||a.section)===s).sort((x,y)=>(y.sc||0)-(x.sc||0)||x.i-y.i).slice(0,5).forEach(a=>{if((a.sc||0)>=5)S.add(a.i)}))}
   CATS.items.forEach(a=>{const o=O('a'+a.i);
+    if(DELS.has(dk(a)))return;
     if(o.out){V.ex.push(a);return}
-    const mc=COLLOK?matchColl(a):null;if(mc){if(!V.cm.has(mc))V.cm.set(mc,a);return}
-    if(!full&&!(a.sum||o.in)){V.ex.push(a);return}
+    const mc=MC.get(a.i);if(mc){if(!V.cm.has(mc))V.cm.set(mc,a);return}
+    if(!full&&!(S.has(a.i)||o.in)){V.ex.push(a);return}
     (V.secs[o.sec||a.section]||V.unk).push(a)});
   CATS.secs.forEach(s=>gsort(V.secs[s],full));gsort(V.unk,true);V.ex.sort((x,y)=>x.i-y.i);return V}
 const lnk=(t,u)=>u?'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>':esc(t);
-function row(k,body,ex){return '<div class="it"><div class="rw"><input type="checkbox" class="ck" data-k="'+esc(k)+'"'+(SEL.has(k)?' checked':'')+'><div class="tx">'+body+'</div>'+(ex?'<button class="g sm" data-a="inc" data-k="'+esc(k)+'">포함</button>':'<button class="dx" title="제외" data-a="out" data-k="'+esc(k)+'">×</button>')+'</div></div>'}
+function row(k,body,ex){return '<div class="it"><div class="rw"><input type="checkbox" class="ck" data-k="'+esc(k)+'"'+(SEL.has(k)?' checked':'')+'><div class="tx">'+body+'</div>'+(ex?'<span class="bt"><button class="g sm" data-a="inc" data-k="'+esc(k)+'">포함</button><button class="g sm rm" data-a="del" data-k="'+esc(k)+'">삭제</button></span>':'<button class="dx" title="제외" data-a="out" data-k="'+esc(k)+'">×</button>')+'</div></div>'}
 function itemA(a,ex){const o=O('a'+a.i),m=[a.media,a.page].filter(Boolean).join(', ');
   const sel=(!ex&&!(o.sec||a.section))?'<select data-mv data-k="a'+a.i+'"><option value="">구분 이동…</option>'+CATS.secs.map(s=>'<option>'+esc(s)+'</option>').join('')+'</select>':'';
   return row('a'+a.i,'<div class="ti">■ '+lnk(a.title,a.url)+(m?' <span>('+esc(m)+')</span>':'')+(ex?' <span>['+(o.out?'직접 제외':'요약 제외')+']</span>':'')+'</div>'+sel,ex)}
 function itemC(c,ex){return row('c'+c.id,'<div class="ti">■ '+lnk(c.title,c.url||c.link)+' <span>('+esc([c.media,c.page].filter(Boolean).join(', '))+')</span>'+(ex?' <span>[직접 제외]</span>':'')+'</div>',ex)}
-function bar(){const n=SEL.size;let a=0,b=0;SEL.forEach(k=>EXK.has(k)?b++:a++);$('abar').style.display=n?'flex':'none';$('sn').textContent=n;$('bo').style.display=a?'':'none';$('bi').style.display=b?'':'none';$('bsec').style.display=[...SEL].some(k=>k[0]==='a')?'':'none'}
+function bar(){const n=SEL.size;let a=0,b=0;SEL.forEach(k=>EXK.has(k)?b++:a++);$('abar').style.display=n?'flex':'none';$('sn').textContent=n;$('bo').style.display=a?'':'none';$('bi').style.display=b?'':'none';$('bd').style.display=b?'':'none';$('bsec').style.display=[...SEL].some(k=>k[0]==='a')?'':'none'}
 function act(kind,keys,val){if(!keys.length)return;keys.forEach(k=>{const o=Object.assign({},O(k));
   if(kind==='out'){o.out=true;o.in=false}else if(kind==='inc'){o.out=false;if(k[0]==='a')o.in=true}else if(kind==='mv'&&k[0]==='a'&&val){o.sec=val;o.out=false;o.in=true}
   OVR[k]=o;SEL.delete(k)});LSs('ov:'+DATE,JSON.stringify(OVR));render()}
-$('rep').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b)act(b.dataset.a,[b.dataset.k])});
+function delKeys(keys){keys.forEach(k=>{if(k[0]==='a'){const a=CATS&&CATS.items[+k.slice(1)];if(a)DELS.add(dk(a))}else DELS.add('c:'+k.slice(1));delete OVR[k];SEL.delete(k)});LSs('del:'+DATE,JSON.stringify([...DELS]));LSs('ov:'+DATE,JSON.stringify(OVR));render()}
+function resetExcel(){
+  if(!CATS&&!ROWS.length&&!FILES.length){msg('초기화할 주요 이슈가 없습니다.','ok');return}
+  if(!confirm('엑셀로 불러온 「2. 주요 이슈」를 모두 비웁니다.\n(1. 관련 보도는 그대로 두며, 주요 이슈에서 한 제외·삭제·구분 이동 기록도 지웁니다.)'))return;
+  CATS=null;ROWS=[];FILES=[];SEL.clear();
+  try{localStorage.removeItem('cats:'+DATE)}catch(e){}
+  Object.keys(OVR).forEach(k=>{if(k[0]==='a')delete OVR[k]});LSs('ov:'+DATE,JSON.stringify(OVR));
+  DELS=new Set([...DELS].filter(k=>k[0]==='c'));LSs('del:'+DATE,JSON.stringify([...DELS]));
+  $('fx').value='';$('fz').value='';$('bar').style.display='none';
+  msg('주요 이슈를 초기화했습니다. 새 엑셀을 올려 다시 분류하세요.','ok');render()}
+function delSel(){const ks=[...SEL].filter(k=>EXK.has(k));if(ks.length&&confirm(ks.length+'건을 삭제합니다. 되돌릴 수 없습니다.'))delKeys(ks)}
+$('rep').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+  if(a==='del'){if(confirm('이 기사를 삭제합니다. 되돌릴 수 없습니다.'))delKeys([b.dataset.k])}
+  else if(a==='empty'){const ks=[...EXK];if(ks.length&&confirm('제외한 기사 '+ks.length+'건을 모두 삭제합니다.\n(요약본에서 빠진 기사도 포함되며, 전체본에서도 사라집니다.) 되돌릴 수 없습니다.'))delKeys(ks)}
+  else act(a,[b.dataset.k])});
 $('rep').addEventListener('change',e=>{const t=e.target;if(t.classList.contains('ck')){t.checked?SEL.add(t.dataset.k):SEL.delete(t.dataset.k);bar()}else if(t.dataset.mv!==undefined&&t.value)act('mv',[t.dataset.k],t.value)});
 function render(){const V=view(),c=CATS,sp=COLLOK?collSplit(V.cm):{p:[],o:[],x:[]};
   EXK=new Set(V.ex.map(a=>'a'+a.i).concat(sp.x.map(x=>'c'+x.id)));
@@ -239,7 +261,7 @@ function render(){const V=view(),c=CATS,sp=COLLOK?collSplit(V.cm):{p:[],o:[],x:[
     c.secs.forEach(s=>{h+='<div class="cat">'+esc(s)+'</div>'+(V.secs[s].length?V.secs[s].map(a=>itemA(a,0)).join(''):'<div class="empty">해당 기사 없음</div>')});
     if(V.unk.length)h+='<div class="cat">분류 미정</div>'+V.unk.map(a=>itemA(a,0)).join('')}
   h+='</div>';
-  if(c||sp.x.length)h+='<div class="page"><h2 class="rt" style="font-size:18px">제외한 기사</h2>'+((V.ex.length||sp.x.length)?sp.x.map(x=>itemC(x,1)).join('')+V.ex.map(a=>itemA(a,1)).join(''):'<div class="empty">제외한 기사가 없습니다.</div>')+'</div>';
+  if(c||sp.x.length)h+='<div class="page"><h2 class="rt" style="font-size:18px">제외한 기사</h2>'+(EXK.size?'<div style="text-align:right;margin-bottom:8px"><button class="g sm rm" data-a="empty">제외한 기사 비우기 ('+EXK.size+'건)</button></div>':'')+((V.ex.length||sp.x.length)?sp.x.map(x=>itemC(x,1)).join('')+V.ex.map(a=>itemA(a,1)).join(''):'<div class="empty">제외한 기사가 없습니다.</div>')+'</div>';
   $('rep').innerHTML=h;$('bsec').innerHTML='<option value="">구분 변경…</option>'+(c?c.secs.map(s=>'<option>'+esc(s)+'</option>').join(''):'');bar()}
 function xl(){if(typeof XLSX==='undefined'){alert('엑셀 도구를 불러오지 못했습니다. 인터넷 연결을 확인하세요.');return}
   const V=view(),c=CATS||{org:'',secs:[]},org=c.org||'기관',sp=COLLOK?collSplit(V.cm):{p:[],o:[],x:[]},r1=[['구분','제목','매체','지면','URL','비고']];
