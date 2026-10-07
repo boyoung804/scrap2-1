@@ -102,9 +102,14 @@ def scrape(url, start, now, pages=10, label=''):
         if r.status_code != 200:
             print(label, '응답 코드', r.status_code); break
         items = parse(r.text, now)
-        if k == 0 and os.environ.get('FORCE_PRINT') and label == '전체':
+        if k == 0 and (os.environ.get('FORCE_PRINT') or not items):
             os.makedirs('data', exist_ok=True)
-            open('data/debug_naver.html', 'w', encoding='utf-8').write(re.sub(r'<(script|style)[\s\S]*?</\\1>', '', r.text)[:200000])
+            open('data/debug_naver.html', 'w', encoding='utf-8').write(re.sub(r'<(script|style)[\s\S]*?</\1>', '', r.text)[:200000])
+        if not items:
+            sp = BeautifulSoup(r.text, 'html.parser')
+            print(f'  [진단] 페이지 제목: {sp.title.get_text(strip=True) if sp.title else "(없음)"}')
+            print(f'  [진단] 링크 {len(sp.find_all("a"))}개 · 네이버뉴스 링크 {len(sp.select("a[href*=\"news.naver.com\"]"))}개 · 제목링크(.tit) {len(sp.select("a.news_tit, a[data-heatmap-target=\".tit\"]"))}개 · 본문 속 "네이버뉴스" {r.text.count("네이버뉴스")}회 · "면" {r.text.count("면")}회')
+            print('  [진단] 앞부분 링크 글자:', [clean(a.get_text())[:25] for a in sp.find_all('a')[:8]])
         print(f'{label} {k + 1}쪽: 기사 {len(items)}건 (HTML {len(r.text)}자)')
         if not items:
             break
