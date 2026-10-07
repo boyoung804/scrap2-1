@@ -1,7 +1,38 @@
 {
  "date": "2026-10-08",
- "items": [],
+ "items": [
+  {
+   "id": "009-0005745367",
+   "title": "정권 홍보 수단 의혹…‘장관급’ 박진영 “대통령 위한 행사 아냐, 믿...",
+   "media": "매일경제",
+   "url": "https://www.mk.co.kr/article/12170527",
+   "link": "https://n.news.naver.com/mnews/article/009/0005745367?sid=102",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-07T16:08+09:00"
+  },
+  {
+   "id": "018-0006383050",
+   "title": "“참가자 54% 늘었는데”…잘나가는 마이스에 무슨 일이",
+   "media": "이데일리",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=04595286645610624&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article",
+   "link": "https://n.news.naver.com/mnews/article/018/0006383050?sid=103",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-07T16:13+09:00"
+  },
+  {
+   "id": "014-0005586262",
+   "title": "'암살자(들)' 공방…박진영, 패노메논 특혜 의혹 부인 [2026 국감]",
+   "media": "파이낸셜뉴스",
+   "url": "https://www.fnnews.com/news/202610071453090365",
+   "link": "https://n.news.naver.com/mnews/article/014/0005586262?sid=103",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-07T16:18+09:00"
+  }
+ ],
  "from": "2026-10-07T07:00:00+09:00",
  "to": "2026-10-08T07:00:00+09:00",
- "updated": "10-07 16:04"
+ "updated": "10-07 16:20"
 }
