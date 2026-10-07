@@ -1,7 +1,20 @@
 {
  "date": "2026-10-08",
- "items": [],
+ "items": [
+  {
+   "id": "469-0000958168",
+   "title": "한국일보 새 창 열림",
+   "media": "한국일보",
+   "url": "https://media.naver.com/press/469",
+   "link": "https://n.news.naver.com/mnews/article/469/0000958168?sid=103",
+   "section": "온라인",
+   "page": "",
+   "keyword": "문체부",
+   "description": "",
+   "pub": "2026-10-07T14:45+09:00"
+  }
+ ],
  "from": "2026-10-07T07:00:00+09:00",
  "to": "2026-10-08T07:00:00+09:00",
- "updated": "10-07 14:26"
+ "updated": "10-07 14:46"
 }
