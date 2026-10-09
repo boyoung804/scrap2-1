@@ -1,7 +1,18 @@
 {
  "date": "2026-10-10",
- "items": [],
+ "items": [
+  {
+   "id": "005-0001877759",
+   "title": "‘김천김밥축제’…“대한민국 축제의 새로운 트렌드 이끈다”",
+   "media": "국민일보",
+   "url": "https://www.kmib.co.kr/article/view.asp?arcid=9000021247&cp=nv",
+   "link": "https://n.news.naver.com/mnews/article/005/0001877759?sid=102",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-09T10:06+09:00"
+  }
+ ],
  "from": "2026-10-09T07:00:00+09:00",
  "to": "2026-10-10T07:00:00+09:00",
- "updated": "10-09 09:48"
+ "updated": "10-09 10:08"
 }
