@@ -1,7 +1,38 @@
 {
  "date": "2026-10-13",
- "items": [],
+ "items": [
+  {
+   "id": "014-0005587541",
+   "title": "7000여종 출간·저작권 보호…김진환 학지사 대표 은관문화훈장",
+   "media": "파이낸셜뉴스",
+   "url": "https://www.fnnews.com/news/202610120500288442",
+   "link": "https://n.news.naver.com/mnews/article/014/0005587541?sid=103",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-12T08:00+09:00"
+  },
+  {
+   "id": "014-0005587540",
+   "title": "한글날 제정 100주년…한류·AI 시대 한국어의 미래 짚는다",
+   "media": "파이낸셜뉴스",
+   "url": "https://www.fnnews.com/news/202610120445400235",
+   "link": "https://n.news.naver.com/mnews/article/014/0005587540?sid=103",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-12T08:00+09:00"
+  },
+  {
+   "id": "014-0005587542",
+   "title": "외국인이 배운 '엄마 손맛'…'코리안 쿡오프' 첫 방송",
+   "media": "파이낸셜뉴스",
+   "url": "https://www.fnnews.com/news/202610120514337233",
+   "link": "https://n.news.naver.com/mnews/article/014/0005587542?sid=103",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-12T08:00+09:00"
+  }
+ ],
  "from": "2026-10-12T07:00:00+09:00",
  "to": "2026-10-13T07:00:00+09:00",
- "updated": "10-12 07:53"
+ "updated": "10-12 08:06"
 }
