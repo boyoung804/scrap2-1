@@ -40,7 +40,6 @@ details{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}summar
 <div class="wrap">
 <div class="panel">
 <div class="row"><button class="g sm" onclick="shift(-1)">◀</button><input type="text" id="rdate" size="11" onchange="load()"><button class="g sm" onclick="shift(1)">▶</button>
-<label><input type="radio" name="mode" value="full" onchange="render()"> 전체본</label><label><input type="radio" name="mode" value="sum" checked onchange="render()"> 요약본</label>
 <span style="flex:1"></span><button class="g" onclick="xl()">엑셀로 저장</button><button class="g" onclick="window.print()">인쇄 / PDF</button></div>
 <div class="hint" id="st"></div></div>
 <div class="panel">
@@ -54,7 +53,7 @@ details{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}summar
 <div class="row"><label>기관명 <input type="text" id="org" oninput="saveCfg()"></label></div>
 <div id="secl"></div>
 <div class="row"><button class="g sm" onclick="secRow();saveCfg()">+ 구분 추가</button></div>
-<div class="hint">설명을 적으면 분류가 더 정확해집니다. 이름에 '오피니언'이 들어가면 사설·칼럼이 모입니다.</div></details></div>
+<div class="hint">체크한 구분만 이번 분류에 쓰입니다(같은 엑셀로 구분을 바꿔 체크하고 ①을 다시 누르면 새 구분으로 분류). 설명을 적으면 분류가 더 정확해집니다. 이름에 '오피니언'이 들어가면 사설·칼럼이 모입니다.</div></details></div>
 <div id="abar"><span><b id="sn">0</b>건 선택</span><button class="g sm" id="bo" onclick="act('out',[...SEL].filter(k=>!EXK.has(k)))">제외로 이동</button><button class="g sm" id="bi" onclick="act('inc',[...SEL].filter(k=>EXK.has(k)))">포함으로 이동</button><select id="bsec" onchange="act('mv',[...SEL].filter(k=>k[0]==='a'),this.value);this.value=''"></select><button class="g sm rm" id="bd" onclick="delSel()">삭제</button><button class="g sm" onclick="SEL.clear();render()">선택 해제</button></div>
 <div id="rep"></div></div>
 <script>
@@ -69,12 +68,12 @@ const todayStr=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return d.g
 const LSg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},LSs=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};CUR=LSg('gcur')||'';
 function msg(t,c){const m=$('msg');m.textContent=t;m.className='msg '+c;m.style.display='block'}
 /* 설정 */
-function secRow(n,d){const r=document.createElement('div');r.className='row sr';r.innerHTML='<input type="text" class="sn" placeholder="구분 이름" style="width:130px" oninput="saveCfg()"><input type="text" class="sd" placeholder="설명(선택) 어떤 기사가 들어가는지" style="flex:1;min-width:170px" oninput="saveCfg()"><button class="g sm" onclick="this.parentNode.remove();saveCfg()">✕</button>';r.querySelector('.sn').value=n||'';r.querySelector('.sd').value=d||'';$('secl').appendChild(r)}
-function cfg(){const secs=[],desc={};document.querySelectorAll('#secl .sr').forEach(r=>{const n=r.querySelector('.sn').value.trim();if(n){secs.push(n);desc[n]=r.querySelector('.sd').value.trim()}});return{org:$('org').value.trim(),secs,desc}}
-function saveCfg(){LSs('cfg3',JSON.stringify({org:$('org').value,rows:[...document.querySelectorAll('#secl .sr')].map(r=>[r.querySelector('.sn').value,r.querySelector('.sd').value])}))}
+function secRow(n,d,on){const r=document.createElement('div');r.className='row sr';r.innerHTML='<input type="checkbox" class="son" title="이번 분류에 사용" onchange="saveCfg()"><input type="text" class="sn" placeholder="구분 이름" style="width:130px" oninput="saveCfg()"><input type="text" class="sd" placeholder="설명(선택) 어떤 기사가 들어가는지" style="flex:1;min-width:170px" oninput="saveCfg()"><button class="g sm" onclick="this.parentNode.remove();saveCfg()">✕</button>';r.querySelector('.sn').value=n||'';r.querySelector('.sd').value=d||'';r.querySelector('.son').checked=on!==false;$('secl').appendChild(r)}
+function cfg(){const secs=[],desc={};document.querySelectorAll('#secl .sr').forEach(r=>{const n=r.querySelector('.sn').value.trim();if(n&&r.querySelector('.son').checked){secs.push(n);desc[n]=r.querySelector('.sd').value.trim()}});return{org:$('org').value.trim(),secs,desc}}
+function saveCfg(){LSs('cfg3',JSON.stringify({org:$('org').value,rows:[...document.querySelectorAll('#secl .sr')].map(r=>[r.querySelector('.sn').value,r.querySelector('.sd').value,r.querySelector('.son').checked])}))}
 (function(){let c=null,o=null;try{c=JSON.parse(LSg('cfg3'))}catch(e){}
   if(!c)try{o=JSON.parse(LSg('cfg2'))}catch(e){}
-  if(c){$('org').value=c.org||'';c.rows.forEach(r=>secRow(r[0],r[1]))}
+  if(c){$('org').value=c.org||'';c.rows.forEach(r=>secRow(r[0],r[1],r[2]))}
   else if(o){$('org').value=o.org||'';String(o.secs||'').split('\n').forEach(l=>{const i=l.indexOf(':');if(l.trim())secRow((i<0?l:l.slice(0,i)).trim(),i<0?'':l.slice(i+1).trim())})}
   else{$('org').value='문화체육관광부';DEF_ROWS.forEach(r=>secRow(r[0],r[1]))}})();
 /* 날짜·자료 불러오기 */
@@ -104,12 +103,12 @@ async function setKey(){const v=$('ak').value.trim();
   catch(e){msg('Google에 연결하지 못했습니다 ['+(e&&e.message||e)+']. 이 파일을 Claude 화면 안이 아닌 일반 브라우저에서 여는지 확인하세요.','err')}
   $('kb').disabled=false}
 let NOTHINK=false,FCUR='';
-async function post(m,parts,sig){
+async function post(m,parts,sig,nt){
   const c=new AbortController(),tm=setTimeout(()=>c.abort(),90000),onAb=()=>c.abort();if(sig)sig.addEventListener('abort',onAb);
-  try{return await fetch(GB+'models/'+m+':generateContent',{method:'POST',signal:c.signal,headers:{'content-type':'application/json','x-goog-api-key':key()},body:JSON.stringify({contents:[{role:'user',parts}],generationConfig:Object.assign({temperature:0,responseMimeType:'application/json',maxOutputTokens:8000},NOTHINK?{}:{thinkingConfig:{thinkingLevel:'minimal'}})})})}
+  try{return await fetch(GB+'models/'+m+':generateContent',{method:'POST',signal:c.signal,headers:{'content-type':'application/json','x-goog-api-key':key()},body:JSON.stringify({contents:[{role:'user',parts}],generationConfig:Object.assign({temperature:0,responseMimeType:'application/json',maxOutputTokens:8000},(NOTHINK||nt)?{}:{thinkingConfig:{thinkingLevel:'minimal'}})})})}
   catch(e){if(sig&&sig.aborted)throw{cancel:1};return null}
   finally{clearTimeout(tm);if(sig)sig.removeEventListener('abort',onAb)}}
-async function ask(parts,sig,fast){
+async function ask(parts,sig,fast,nt){
   let L=models();if(!key()||!L.length)throw{fatal:'Gemini 키를 먼저 저장해주세요.'};
   if(fast){const sc=n=>(/lite/.test(n)?0:2)+(/preview/.test(n)?1:0);L=L.slice().sort((a,b)=>sc(a)-sc(b))}
   for(let round=0;round<8;round++){
@@ -118,9 +117,9 @@ async function ask(parts,sig,fast){
     for(const m of order){
       if((BUSY[m]||0)>Date.now())continue;
       if(sig&&sig.aborted)throw{cancel:1};
-      const th=!NOTHINK;let r=await post(m,parts,sig),b='';
+      const th=!NOTHINK&&!nt;let r=await post(m,parts,sig,nt),b='';
       if(r&&!r.ok){try{b=await r.text()}catch(e){}
-        if(th&&r.status===400&&/thinking|minimal/i.test(b)){NOTHINK=true;r=await post(m,parts,sig);b='';if(r&&!r.ok){try{b=await r.text()}catch(e){}}}}
+        if(th&&r.status===400&&/thinking|minimal/i.test(b)){NOTHINK=true;r=await post(m,parts,sig,nt);b='';if(r&&!r.ok){try{b=await r.text()}catch(e){}}}}
       if(!r){BUSY[m]=Date.now()+45000;continue}
       if(r.ok){let o=null;try{const j=await r.json(),txt=(((j.candidates||[])[0]||{}).content&&(j.candidates[0].content.parts||[]).map(x=>x.text||'').join(''))||'',mm=txt.replace(/```json|```/g,'').match(/[\{\[][\s\S]*[\}\]]/);if(mm)o=JSON.parse(mm[0])}catch(e){}
         if(o){if(fast)FCUR=m;else CUR=m;LSs(fast?'gfcur':'gcur',m);return o}BUSY[m]=Date.now()+20000;continue}
@@ -141,15 +140,23 @@ $('fx').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)retu
   catch(err){msg('엑셀을 읽지 못했습니다: '+(err&&err.message||err),'err')}});
 const MIME={png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',gif:'image/gif'},ext=n=>(n.split('.').pop()||'').toLowerCase();
 $('fz').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;
-  try{const z=await JSZip.loadAsync(f),out=[];for(const k of Object.keys(z.files)){const x=z.files[k];if(x.dir||/(^|\/)(__MACOSX|\.)/.test(k)||!MIME[ext(k)])continue;out.push({name:k.split('/').pop(),blob:new Blob([await x.async('arraybuffer')],{type:MIME[ext(k)]})})}
+  try{const dec=b=>{try{return new TextDecoder('utf-8',{fatal:true}).decode(b)}catch(e){try{return new TextDecoder('euc-kr').decode(b)}catch(e2){return String.fromCharCode.apply(null,Array.from(b))}}},z=await JSZip.loadAsync(f,{decodeFileName:dec}),out=[];for(const k of Object.keys(z.files)){const x=z.files[k];if(x.dir||/(^|\/)(__MACOSX|\.)/.test(k)||!MIME[ext(k)])continue;out.push({name:k.split('/').pop(),blob:new Blob([await x.async('arraybuffer')],{type:MIME[ext(k)]})})}
+    out.sort((p,q)=>p.name.localeCompare(q.name,undefined,{numeric:true}));
     FILES=out;msg('이미지 '+out.length+'장을 불러왔습니다.','ok')}catch(err){msg('zip을 읽지 못했습니다: '+(err&&err.message||err),'err')}});
-async function imgB64(b){const bm=await createImageBitmap(b),r=Math.min(1,1000/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(bm.width*r));c.height=Math.max(1,Math.round(bm.height*r));c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.7).split(',')[1]}
+async function imgB64(b){const bm=await createImageBitmap(b),r=Math.min(1,1600/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(bm.width*r));c.height=Math.max(1,Math.round(bm.height*r));c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.85).split(',')[1]}
 /* 분류 */
 const arrOf=r=>(Array.isArray(r)?r:(Array.isArray(r&&r.items)?r.items:(Object.values(r||{}).find(Array.isArray)||[]))).filter(x=>x&&typeof x==='object');
-function titlePrompt(c,part){return '아래는 오늘 신문 기사 목록입니다(번호|매체|지면|제목). 본문은 없고 제목만 있습니다. 기사마다 한 항목씩 아래 JSON 한 개만 출력하세요. 설명이나 코드블록은 쓰지 마세요.\n{"items":[{"k":번호,"section":"구분 이름","imp":1~5}]}\n구분 목록:\n'+c.secs.map(s=>'- '+s+(c.desc[s]?': '+c.desc[s]:'')).join('\n')+'\n- 모든 번호를 k 그대로 빠짐없이 출력하세요.\n- section: 위 목록의 이름을 글자 그대로 하나만 쓰세요. 제목만으로 도저히 알 수 없으면 빈 문자열("")로 두세요. 사설·칼럼 같은 의견 기사는 이름에 \'오피니언\'이 있는 구분을 쓰세요.\n- imp(중요도): 5=정책·제도·행정에 큰 영향을 주거나 사회적 파장이 큰 이슈, 4=중요, 3=보통, 2=소소한 소식, 1=단순 안내·인사·부고·행사 알림.\n\n'+part.map(x=>(x.i+1)+'|'+x.media+'|'+x.page+'|'+x.title).join('\n')}
+function titlePrompt(c,part){return '아래는 오늘 신문 기사 목록입니다(번호|매체|지면|제목). 본문은 없고 제목만 있습니다. 기사마다 한 항목씩 아래 JSON 한 개만 출력하세요. 설명이나 코드블록은 쓰지 마세요.\n{"items":[{"k":번호,"section":"구분 이름","imp":1~5}]}\n구분 목록:\n'+c.secs.map(s=>'- '+s+(c.desc[s]?': '+c.desc[s]:'')).join('\n')+'\n- 여러 구분에 걸치면 더 구체적인 구분을 고르세요. 정치·경제처럼 범위가 넓은 구분은 다른 구분에 전혀 해당하지 않을 때만 쓰세요.\n- 모든 번호를 k 그대로 빠짐없이 출력하세요.\n- section: 위 목록의 이름을 글자 그대로 하나만 쓰세요. 제목만으로 도저히 알 수 없으면 빈 문자열("")로 두세요. 사설·칼럼 같은 의견 기사는 이름에 \'오피니언\'이 있는 구분을 쓰세요.\n- imp(중요도): 5=정책·제도·행정에 큰 영향을 주거나 사회적 파장이 큰 이슈, 4=중요, 3=보통, 2=소소한 소식, 1=단순 안내·인사·부고·행사 알림.\n\n'+part.map(x=>(x.i+1)+'|'+x.media+'|'+x.page+'|'+x.title).join('\n')}
 function front(pg){const m=/^([A-Za-z]?)\s*0*(\d+)/.exec(String(pg||'').trim());return !!m&&(m[1]===''||m[1].toUpperCase()==='A')&&+m[2]>=1&&+m[2]<=3}
 function summarize(items,secs){items.forEach(x=>{x.sc=x.imp+(front(x.page)?2:0)+Math.min(x.n-1,3);x.sum=false});
   secs.forEach(s=>items.filter(y=>y.section===s).sort((a,b)=>b.sc-a.sc||a.i-b.i).slice(0,5).forEach(x=>{x.sum=x.sc>=5}))}
+let LASTRAW='';
+function pickSec(c,v){v=String(v||'').trim();if(!v)return'';if(c.secs.includes(v))return v;const n=nk(v);let f=c.secs.find(x=>nk(x)===n);if(f)return f;f=c.secs.find(x=>n&&(n.includes(nk(x))||nk(x).includes(n)));return f||''}
+async function readImgs(part,c,sig,map){
+  const parts=[{text:'아래에 신문 기사 이미지 '+part.length+'장이 [이미지 1]… 순서로 주어집니다. 이미지의 글자를 읽고, 이미지마다 아래 구분 목록 중 가장 알맞은 구분을 반드시 하나 고르세요(글자를 전혀 읽을 수 없을 때만 빈 문자열). JSON {"items":[{"k":이미지 번호,"section":"구분 이름"}]} 한 개만 출력하고 설명은 쓰지 마세요.\n구분 목록:\n'+c.secs.map(s=>'- '+s+(c.desc[s]?': '+c.desc[s]:'')).join('\n')+'\n- 여러 구분에 걸치면 더 구체적인 구분을 고르세요. 정치·경제처럼 범위가 넓은 구분은 다른 구분에 전혀 해당하지 않을 때만 쓰세요.'}];
+  for(let k=0;k<part.length;k++){parts.push({text:'[이미지 '+(k+1)+'] 기사 제목: '+part[k].title});parts.push({inline_data:{mime_type:'image/jpeg',data:await imgB64(FILES[map[part[k].i]].blob)}})}
+  const r=await ask(parts,sig,false,true);LASTRAW=JSON.stringify(r).slice(0,160);
+  const got={};arrOf(r).forEach((x,p)=>{const k=parseInt(x.k,10),v=pickSec(c,x.section);got[(k>=1&&k<=part.length)?k:p+1]=v});return got}
 function setProg(a,b){$('bi').style.width=(b?a/b*100:0)+'%'}
 function stop(){if(ctl)ctl.abort()}
 async function runCls(withImg){
@@ -157,7 +164,7 @@ async function runCls(withImg){
   const reuse=!!(withImg&&CATS&&CATS.items.length&&(!ROWS.length||(CATS.items.length===ROWS.length&&CATS.items.every((x,i)=>nk(x.title)===nk(ROWS[i].title)))));
   if(!reuse&&!ROWS.length){msg('먼저 기사 엑셀을 올려주세요.','err');return}
   if(!key()){$('kd').open=true;msg('Gemini 키를 먼저 저장해주세요.','err');return}
-  const c=cfg();if(!c.secs.length){msg('구분을 하나 이상 설정해주세요.','err');return}
+  const c0=cfg(),c=reuse?Object.assign({},c0,{org:CATS.org,secs:CATS.secs.slice()}):c0;if(!c.secs.length){msg('분류에 쓸 구분을 하나 이상 체크해주세요.','err');return}
   if(withImg&&!FILES.length){msg('②를 쓰려면 이미지 zip도 올려주세요.','err');return}
   DATE=$('rdate').value.trim()||todayStr();RUN=true;ctl=new AbortController();const sig=ctl.signal;
   $('b1').style.display=$('b2').style.display='none';$('bs').style.display='';$('bar').style.display='block';setProg(0,1);
@@ -178,15 +185,19 @@ async function runCls(withImg){
     {const ks=Object.keys(cache);if(ks.length>3000)ks.slice(0,ks.length-3000).forEach(k=>delete cache[k]);LSs('tcache',JSON.stringify(cache))}
     msg('같은 이슈를 다룬 기사 확인 중…','ok');await clusterP;
     }
-    if(withImg){const ks=items.map(x=>nk(x.media+x.title)),used=new Set(),map={};
-      FILES.forEach((f,fi)=>{const k=fileKey(f.name);let j=ks.findIndex((x,j)=>!used.has(j)&&x===k);if(j<0&&k.length>=10)j=ks.findIndex((x,j)=>!used.has(j)&&x.length>=10&&(x.startsWith(k)||k.startsWith(x)));if(j>=0){used.add(j);map[j]=fi}});
-      const un=items.filter(x=>!x.section&&map[x.i]!==undefined&&!DELS.has(dk(x)));let d2=0;
+    if(withImg){const ks=items.map(x=>nk(x.media+x.title)),used=new Set(),map={},unf=[];
+      FILES.forEach((f,fi)=>{const k=fileKey(f.name);let j=ks.findIndex((x,j)=>!used.has(j)&&x===k);if(j<0&&k.length>=10)j=ks.findIndex((x,j)=>!used.has(j)&&x.length>=10&&(x.startsWith(k)||k.startsWith(x)));if(j>=0){used.add(j);map[j]=fi}else unf.push([k,fi])});
+      unf.forEach(([k,fi])=>{const j=items.findIndex((x,j)=>!used.has(j)&&nk(x.title).length>=8&&k.includes(nk(x.title)));if(j>=0){used.add(j);map[j]=fi}});
+      if(FILES.length===items.length)items.forEach((x,j)=>{if(map[j]===undefined&&!used.has(j)&&!Object.values(map).includes(j)){map[j]=j;used.add(j)}}); /* 이름으로 못 찾으면, 개수가 같을 때 올린 순서대로 연결 */
+      const un=items.filter(x=>!x.section&&map[x.i]!==undefined&&!DELS.has(dk(x)));let d2=0,fixed=0;
       for(let s=0;s<un.length;s+=6){const part=un.slice(s,s+6);msg('제목으로 못 가린 기사 이미지 분석 중… '+d2+' / '+un.length,'ok');
-        const parts=[{text:'아래에 신문 기사 이미지 '+part.length+'장이 [이미지 1]… 순서로 주어집니다. 글자를 읽고 이미지마다 JSON {"items":[{"k":이미지 번호,"section":"구분 이름"}]} 한 개만 출력하세요. 구분 목록:\n'+c.secs.map(s=>'- '+s+(c.desc[s]?': '+c.desc[s]:'')).join('\n')+'\nsection은 목록의 이름을 글자 그대로 쓰고, 알 수 없으면 빈 문자열로 두세요.'}];
-        for(let k=0;k<part.length;k++){parts.push({text:'[이미지 '+(k+1)+'] 기사 제목: '+part[k].title});parts.push({inline_data:{mime_type:'image/jpeg',data:await imgB64(FILES[map[part[k].i]].blob)}})}
-        try{const got={};arrOf(await ask(parts,sig)).forEach((x,p)=>{const k=parseInt(x.k,10);got[(k>=1&&k<=part.length)?k:p+1]=x});part.forEach((x,p)=>{const g=got[p+1];if(g&&c.secs.includes(g.section))x.section=g.section})}catch(e){if(e&&(e.cancel||e.fatal))throw e}
+        try{const got=await readImgs(part,c,sig,map);part.forEach((x,p)=>{if(got[p+1]){x.section=got[p+1];fixed++}});
+          for(const x of part.filter(y=>!y.section)){const g1=await readImgs([x],c,sig,map);if(g1[1]){x.section=g1[1];fixed++}}}
+        catch(e){if(e&&(e.cancel||e.fatal))throw e;LASTRAW='오류: '+(e&&e.message||e)}
         d2+=part.length}
-      note=' · 이미지 분석 '+un.length+'건'+(items.filter(x=>!x.section&&!DELS.has(dk(x))).length-un.length>0?' (이미지를 찾지 못한 기사 있음)':'')}
+      const noImg=items.filter(x=>!x.section&&!DELS.has(dk(x))&&map[x.i]===undefined).length;
+      note=' · 이미지 연결 '+Object.keys(map).length+'/'+FILES.length+'장 · 이미지 분석 '+un.length+'건 중 '+fixed+'건 분류'+(noImg>0?' · 이미지를 못 찾은 기사 '+noImg+'건':'')+(un.length&&fixed<un.length&&LASTRAW?' · 모델 응답: '+LASTRAW:'')+(noImg>0?' · [연결 확인] 파일 '+FILES.slice(0,1).map(f=>fileKey(f.name).slice(0,20)).join()+' / 기사 '+items.filter(x=>!x.section&&map[x.i]===undefined).slice(0,1).map(x=>nk(x.media+x.title).slice(0,20)).join():'')}
+
     summarize(items,c.secs);
     CATS={org:c.org,secs:c.secs,items,updated:new Date().toTimeString().slice(0,5)};LSs('cats:'+DATE,JSON.stringify(CATS));if(!reuse){OVR={};SEL.clear();LSs('ov:'+DATE,'{}')}
     msg((reuse?'이어서 분석 완료: ':'분류 완료: ')+N+'건'+note+' · 분류 미정 '+items.filter(x=>!x.section).length+'건','ok')}
@@ -211,7 +222,7 @@ function collSplit(cm){const MO=MEDIA.map(nk),mi=c=>{const i=MO.indexOf(nk(c.med
 function collHtml(sp){const blk=(n,a)=>'<div class="cat">'+n+' · '+a.length+'건</div>'+(a.length?a.map(c=>itemC(c,0)).join(''):'<div class="empty">해당 기사 없음</div>');return blk('지면',sp.p)+blk('온라인',sp.o)}
 /* 보기 */
 const O=k=>OVR[k]||{},dk=a=>'a:'+nk(a.media+a.title);
-function view(){const full=document.querySelector('input[name=mode]:checked').value==='full',V={secs:{},unk:[],ex:[],cm:new Map()};
+function view(){const full=true,V={secs:{},unk:[],ex:[],cm:new Map()};
   if(!CATS)return V;CATS.secs.forEach(s=>V.secs[s]=[]);
   const MC=new Map();if(COLLOK)CATS.items.forEach(a=>{const m=matchColl(a);if(m)MC.set(a.i,m)});
   let S=null;
@@ -231,7 +242,7 @@ const lnk=(t,u)=>u?'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)
 function row(k,body,ex){return '<div class="it"><div class="rw"><input type="checkbox" class="ck" data-k="'+esc(k)+'"'+(SEL.has(k)?' checked':'')+'><div class="tx">'+body+'</div>'+(ex?'<span class="bt"><button class="g sm" data-a="inc" data-k="'+esc(k)+'">포함</button><button class="g sm rm" data-a="del" data-k="'+esc(k)+'">삭제</button></span>':'<button class="dx" title="제외" data-a="out" data-k="'+esc(k)+'">×</button>')+'</div></div>'}
 function itemA(a,ex){const o=O('a'+a.i),m=[a.media,a.page].filter(Boolean).join(', ');
   const sel=(!ex&&!(o.sec||a.section))?'<select data-mv data-k="a'+a.i+'"><option value="">구분 이동…</option>'+CATS.secs.map(s=>'<option>'+esc(s)+'</option>').join('')+'</select>':'';
-  return row('a'+a.i,'<div class="ti">■ '+lnk(a.title,a.url)+(m?' <span>('+esc(m)+')</span>':'')+(ex?' <span>['+(o.out?'직접 제외':'요약 제외')+']</span>':'')+'</div>'+sel,ex)}
+  return row('a'+a.i,'<div class="ti">■ '+lnk(a.title,a.url)+(m?' <span>('+esc(m)+')</span>':'')+(ex?' <span>['+'직접 제외'+']</span>':'')+'</div>'+sel,ex)}
 function itemC(c,ex){return row('c'+c.id,'<div class="ti">■ '+lnk(c.title,c.url||c.link)+' <span>('+esc([c.media,c.page].filter(Boolean).join(', '))+')</span>'+(ex?' <span>[직접 제외]</span>':'')+'</div>',ex)}
 function bar(){const n=SEL.size;let a=0,b=0;SEL.forEach(k=>EXK.has(k)?b++:a++);$('abar').style.display=n?'flex':'none';$('sn').textContent=n;$('bo').style.display=a?'':'none';$('bi').style.display=b?'':'none';$('bd').style.display=b?'':'none';$('bsec').style.display=[...SEL].some(k=>k[0]==='a')?'':'none'}
 function act(kind,keys,val){if(!keys.length)return;keys.forEach(k=>{const o=Object.assign({},O(k));
@@ -250,7 +261,7 @@ function resetExcel(){
 function delSel(){const ks=[...SEL].filter(k=>EXK.has(k));if(ks.length&&confirm(ks.length+'건을 삭제합니다. 되돌릴 수 없습니다.'))delKeys(ks)}
 $('rep').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
   if(a==='del'){if(confirm('이 기사를 삭제합니다. 되돌릴 수 없습니다.'))delKeys([b.dataset.k])}
-  else if(a==='empty'){const ks=[...EXK];if(ks.length&&confirm('제외한 기사 '+ks.length+'건을 모두 삭제합니다.\n(요약본에서 빠진 기사도 포함되며, 전체본에서도 사라집니다.) 되돌릴 수 없습니다.'))delKeys(ks)}
+  else if(a==='empty'){const ks=[...EXK];if(ks.length&&confirm('제외한 기사 '+ks.length+'건을 모두 삭제합니다.\n되돌릴 수 없습니다.'))delKeys(ks)}
   else act(a,[b.dataset.k])});
 $('rep').addEventListener('change',e=>{const t=e.target;if(t.classList.contains('ck')){t.checked?SEL.add(t.dataset.k):SEL.delete(t.dataset.k);bar()}else if(t.dataset.mv!==undefined&&t.value)act('mv',[t.dataset.k],t.value)});
 function render(){const V=view(),c=CATS,sp=COLLOK?collSplit(V.cm):{p:[],o:[],x:[]};
