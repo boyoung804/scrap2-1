@@ -77,8 +77,8 @@
    "media": "한국일보",
    "url": "https://www.hankookilbo.com/news/article/A2026101409500002437?did=NA",
    "link": "https://n.news.naver.com/mnews/article/469/0000959360?sid=103",
-   "section": "온라인",
-   "page": "",
+   "section": "지면",
+   "page": "21면",
    "pub": "2026-10-14T11:31+09:00"
   },
   {
@@ -220,10 +220,20 @@
    "section": "온라인",
    "page": "",
    "pub": "2026-10-15T01:28+09:00"
+  },
+  {
+   "id": "469-0000959544",
+   "title": "[단독] 동급생 성폭행하고 불법 촬영… 가해자는 징계 없이 졸업했다",
+   "media": "한국일보",
+   "url": "https://www.hankookilbo.com/news/article/A2026101300450001171?did=NA",
+   "link": "https://n.news.naver.com/mnews/article/469/0000959544?sid=102",
+   "section": "지면",
+   "page": "12면",
+   "pub": "2026-10-15T04:31+09:00"
   }
  ],
- "printed_at": "2026-10-15T04:11:43+09:00",
+ "printed_at": "2026-10-15T04:44:45+09:00",
  "from": "2026-10-14T07:00:00+09:00",
  "to": "2026-10-15T07:00:00+09:00",
- "updated": "10-15 04:11"
+ "updated": "10-15 04:44"
 }
