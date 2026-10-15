@@ -147,8 +147,8 @@
    "media": "전자신문",
    "url": "https://www.etnews.com/20261015000321",
    "link": "https://n.news.naver.com/mnews/article/030/0003475539?sid=105",
-   "section": "온라인",
-   "page": "",
+   "section": "지면",
+   "page": "5면",
    "pub": "2026-10-15T16:01+09:00"
   },
   {
@@ -160,10 +160,30 @@
    "section": "온라인",
    "page": "",
    "pub": "2026-10-15T16:20+09:00"
+  },
+  {
+   "id": "022-0004166993",
+   "title": "‘가을 야구’ 시즌에 李 대통령 “암표 거래, 꿈도 꾸지 말라”",
+   "media": "세계일보",
+   "url": "https://www.segye.com/newsView/20261015519548?OutUrl=naver",
+   "link": "https://n.news.naver.com/mnews/article/022/0004166993?sid=100",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-15T16:49+09:00"
+  },
+  {
+   "id": "009-0005749200",
+   "title": "88올림픽 굴렁쇠·손기정 金…한국 스포츠 역사 한눈에",
+   "media": "매일경제",
+   "url": "https://www.mk.co.kr/article/12176929",
+   "link": "https://m.sports.naver.com/general/article/009/0005749200",
+   "section": "지면",
+   "page": "A27면",
+   "pub": "2026-10-15T17:15+09:00"
   }
  ],
- "printed_at": "2026-10-15T16:47:49+09:00",
+ "printed_at": "2026-10-15T17:16:58+09:00",
  "from": "2026-10-15T07:00:00+09:00",
  "to": "2026-10-16T07:00:00+09:00",
- "updated": "10-15 16:47"
+ "updated": "10-15 17:16"
 }
