@@ -37,8 +37,8 @@
    "media": "머니투데이",
    "url": "https://www.mt.co.kr/culture/2026/10/26/2026102610422048087",
    "link": "https://n.news.naver.com/mnews/article/008/0005431707?sid=103",
-   "section": "온라인",
-   "page": "",
+   "section": "지면",
+   "page": "25면",
    "pub": "2026-10-26T15:16+09:00"
   },
   {
@@ -62,6 +62,16 @@
    "pub": "2026-10-26T16:07+09:00"
   },
   {
+   "id": "011-0004675306",
+   "title": "K뮤지컬 육성 프로젝트…‘남벌’ ‘우영우’ 등 52편 무대 마련",
+   "media": "서울경제",
+   "url": "https://www.sedaily.com/article/20106275?ref=naver",
+   "link": "https://n.news.naver.com/mnews/article/011/0004675306?sid=103",
+   "section": "지면",
+   "page": "29면",
+   "pub": "2026-10-26T17:54+09:00"
+  },
+  {
    "id": "015-0005346644",
    "title": "\"1兆 들여 돔구장 짓겠다\"…전국서 뜨거운 유치 경쟁",
    "media": "한국경제",
@@ -77,8 +87,8 @@
    "media": "서울경제",
    "url": "https://www.sedaily.com/article/20106343?ref=naver",
    "link": "https://n.news.naver.com/mnews/article/011/0004675357?sid=103",
-   "section": "온라인",
-   "page": "",
+   "section": "지면",
+   "page": "31면",
    "pub": "2026-10-26T20:07+09:00"
   },
   {
@@ -100,10 +110,40 @@
    "section": "지면",
    "page": "A23면",
    "pub": "2026-10-26T21:07+09:00"
+  },
+  {
+   "id": "025-0003560648",
+   "title": "윤동주·김남조 시인 금관문화훈장",
+   "media": "중앙일보",
+   "url": "https://www.joongang.co.kr/article/25473004",
+   "link": "https://n.news.naver.com/mnews/article/025/0003560648?sid=103",
+   "section": "지면",
+   "page": "A18면",
+   "pub": "2026-10-27T00:54+09:00"
+  },
+  {
+   "id": "005-0001881046",
+   "title": "故 윤동주·김남조 시인에 금관문화훈장",
+   "media": "국민일보",
+   "url": "https://www.kmib.co.kr/article/20261026502060",
+   "link": "https://n.news.naver.com/mnews/article/005/0001881046?sid=103",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-27T01:54+09:00"
+  },
+  {
+   "id": "020-0003757845",
+   "title": "윤동주-김남조 시인 금관문화훈장",
+   "media": "동아일보",
+   "url": "https://www.donga.com/news/People/article/all/20261027/134913534/2",
+   "link": "https://n.news.naver.com/mnews/article/020/0003757845?sid=102",
+   "section": "지면",
+   "page": "A25면",
+   "pub": "2026-10-27T04:31+09:00"
   }
  ],
- "printed_at": "2026-10-26T23:07:38+09:00",
+ "printed_at": "2026-10-27T04:54:45+09:00",
  "from": "2026-10-26T07:00:00+09:00",
  "to": "2026-10-27T07:00:00+09:00",
- "updated": "10-26 23:07"
+ "updated": "10-27 04:54"
 }
