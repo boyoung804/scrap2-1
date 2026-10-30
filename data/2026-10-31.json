@@ -57,13 +57,23 @@
    "media": "서울경제",
    "url": "https://www.sedaily.com/article/20108452?ref=naver",
    "link": "https://n.news.naver.com/mnews/article/011/0004677167?sid=103",
-   "section": "온라인",
-   "page": "",
+   "section": "지면",
+   "page": "22면",
    "pub": "2026-10-30T17:53+09:00"
+  },
+  {
+   "id": "015-0005348652",
+   "title": "\"파하~\" 웃음 남기고 떠난 '국민 아버지'…한국인의 情 보여줬다",
+   "media": "한국경제",
+   "url": "https://www.hankyung.com/article/2026103068341",
+   "link": "https://n.news.naver.com/mnews/article/015/0005348652?sid=102",
+   "section": "지면",
+   "page": "A21면",
+   "pub": "2026-10-30T18:30+09:00"
   }
  ],
- "printed_at": "2026-10-30T17:54:23+09:00",
+ "printed_at": "2026-10-31T00:30:15+09:00",
  "from": "2026-10-30T07:00:00+09:00",
  "to": "2026-10-31T07:00:00+09:00",
- "updated": "10-30 17:54"
+ "updated": "10-31 00:30"
 }
