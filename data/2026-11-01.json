@@ -1,8 +1,49 @@
 {
  "date": "2026-11-01",
- "items": [],
- "printed_at": "2026-10-31T08:40:58+09:00",
+ "items": [
+  {
+   "id": "018-0006400627",
+   "title": "\"투병 중 삶 정리하는 다큐 직접 부탁\"…故 최불암, 뒤늦게 알려진 사연",
+   "media": "이데일리",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=01922086645618496&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article",
+   "link": "https://m.entertain.naver.com/article/018/0006400627",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-31T10:43+09:00"
+  },
+  {
+   "id": "018-0006400633",
+   "title": "故 최불암 유족, 뜻 바꿔 빈소 공개…영정 앞엔 금관문화훈장",
+   "media": "이데일리",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=01948326645618496&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article",
+   "link": "https://m.entertain.naver.com/article/018/0006400633",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-31T10:48+09:00"
+  },
+  {
+   "id": "022-0004171289",
+   "title": "“67년간 국민 곁을 지켜온 배우”…정부, 故 최불암에 금관문화훈장 추...",
+   "media": "세계일보",
+   "url": "https://www.segye.com/newsView/20261031503690?OutUrl=naver",
+   "link": "https://n.news.naver.com/mnews/article/022/0004171289?sid=103",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-31T11:11+09:00"
+  },
+  {
+   "id": "018-0006400654",
+   "title": "어르신 식당이 ‘마을의 식탁’으로…대구 서구 백년식당, 문체부 장관...",
+   "media": "이데일리",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=02020486645618496&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article",
+   "link": "https://n.news.naver.com/mnews/article/018/0006400654?sid=100",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-10-31T11:31+09:00"
+  }
+ ],
+ "printed_at": "2026-10-31T11:43:30+09:00",
  "from": "2026-10-31T07:00:00+09:00",
  "to": "2026-11-01T07:00:00+09:00",
- "updated": "10-31 08:40"
+ "updated": "10-31 11:43"
 }
