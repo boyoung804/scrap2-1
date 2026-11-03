@@ -2,6 +2,36 @@
  "date": "2026-11-04",
  "items": [
   {
+   "id": "081-0003695068",
+   "title": "어린이 마음 살핀 송파위례도서관 ‘문체부장관 표창’",
+   "media": "서울신문",
+   "url": "https://www.seoul.co.kr/news/publicnews/seoul_local/pride_seoul/2026/11/03/20261103021002?wlog_tag3=naver",
+   "link": "https://n.news.naver.com/mnews/article/081/0003695068?sid=102",
+   "section": "지면",
+   "page": "21면",
+   "pub": "2026-11-03T06:56+09:00"
+  },
+  {
+   "id": "081-0003695078",
+   "title": "수사반장·전원일기… 영원히 퇴근한 ‘국민 아버지’",
+   "media": "서울신문",
+   "url": "https://www.seoul.co.kr/news/peoples/2026/11/03/20261103023006?wlog_tag3=naver",
+   "link": "https://n.news.naver.com/mnews/article/081/0003695078?sid=102",
+   "section": "지면",
+   "page": "23면",
+   "pub": "2026-11-03T06:56+09:00"
+  },
+  {
+   "id": "020-0003759597",
+   "title": "“구도자의 길 걷고자 한 연기자” 최불암 영면",
+   "media": "동아일보",
+   "url": "https://www.donga.com/news/People/article/all/20261103/134953824/2",
+   "link": "https://n.news.naver.com/mnews/article/020/0003759597?sid=102",
+   "section": "지면",
+   "page": "A22면",
+   "pub": "2026-11-03T06:56+09:00"
+  },
+  {
    "id": "015-0005349567",
    "title": "'내가 키운 S급들' 등 2026 월드웹툰어워즈 본상 10편 수상",
    "media": "한국경제",
@@ -50,10 +80,40 @@
    "section": "온라인",
    "page": "",
    "pub": "2026-11-03T23:31+09:00"
+  },
+  {
+   "id": "020-0003759923",
+   "title": "‘훈맹정음’ 만든지 100년… 점자 배울 교육원은 전국 5곳뿐",
+   "media": "동아일보",
+   "url": "https://www.donga.com/news/Society/article/all/20261103/134960928/2",
+   "link": "https://n.news.naver.com/mnews/article/020/0003759923?sid=102",
+   "section": "지면",
+   "page": "A12면",
+   "pub": "2026-11-04T04:56+09:00"
+  },
+  {
+   "id": "011-0004678438",
+   "title": "‘대한민국 그림책상’ 대상에 김지원·전미화 작가…“고맙다, 지렁아...",
+   "media": "서울경제",
+   "url": "https://www.sedaily.com/article/20109836?ref=naver",
+   "link": "https://n.news.naver.com/mnews/article/011/0004678438?sid=103",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-11-04T06:02+09:00"
+  },
+  {
+   "id": "018-0006403234",
+   "title": "시력 잃었는데, 점자 배우러 상경까지…갈길 먼 시각장애인 교육",
+   "media": "이데일리",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=01872886645642440&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article",
+   "link": "https://n.news.naver.com/mnews/article/018/0006403234?sid=102",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-11-04T06:02+09:00"
   }
  ],
- "printed_at": "2026-11-04T01:31:32+09:00",
+ "printed_at": "2026-11-04T06:56:00+09:00",
  "from": "2026-11-03T07:00:00+09:00",
  "to": "2026-11-04T07:00:00+09:00",
- "updated": "11-04 01:31"
+ "updated": "11-04 06:56"
 }
