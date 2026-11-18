@@ -37,13 +37,43 @@
    "media": "서울경제",
    "url": "https://www.sedaily.com/article/20116180?ref=naver",
    "link": "https://n.news.naver.com/mnews/article/011/0004683722?sid=105",
+   "section": "지면",
+   "page": "12면",
+   "pub": "2026-11-18T21:16+09:00"
+  },
+  {
+   "id": "025-0003566324",
+   "title": "경복궁 대신 이곳 간다…2000만 외국인 홀린 ‘한국 일상’",
+   "media": "중앙일보",
+   "url": "https://www.joongang.co.kr/article/25480006",
+   "link": "https://n.news.naver.com/mnews/article/025/0003566324?sid=103",
    "section": "온라인",
    "page": "",
-   "pub": "2026-11-18T21:16+09:00"
+   "pub": "2026-11-19T05:00+09:00"
+  },
+  {
+   "id": "081-0003700950",
+   "title": "펄어비스 ‘붉은사막’ 게임대상 휩쓸었다",
+   "media": "서울신문",
+   "url": "https://www.seoul.co.kr/news/peoples/2026/11/19/20261119022008?wlog_tag3=naver",
+   "link": "https://n.news.naver.com/mnews/article/081/0003700950?sid=102",
+   "section": "지면",
+   "page": "22면",
+   "pub": "2026-11-19T05:04+09:00"
+  },
+  {
+   "id": "018-0006412154",
+   "title": "5만석 돔구장 유치전, 경기도 내 8파전…승부는 ‘7000억 실탄’",
+   "media": "이데일리",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=01249686645647360&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article",
+   "link": "https://n.news.naver.com/mnews/article/018/0006412154?sid=100",
+   "section": "지면",
+   "page": "A26면",
+   "pub": "2026-11-19T05:06+09:00"
   }
  ],
- "printed_at": "2026-11-18T21:28:16+09:00",
+ "printed_at": "2026-11-19T05:50:33+09:00",
  "from": "2026-11-18T07:00:00+09:00",
  "to": "2026-11-19T07:00:00+09:00",
- "updated": "11-18 21:28"
+ "updated": "11-19 05:50"
 }
