@@ -1,8 +1,59 @@
 {
  "date": "2026-11-20",
- "items": [],
- "printed_at": "2026-11-19T19:13:26+09:00",
+ "items": [
+  {
+   "id": "018-0006412154",
+   "title": "5만석 돔구장 유치전, 경기도 내 8파전…승부는 ‘7000억 실탄’",
+   "media": "이데일리",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=01249686645647360&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article",
+   "link": "https://n.news.naver.com/mnews/article/018/0006412154?sid=100",
+   "section": "지면",
+   "page": "A26면",
+   "pub": "2026-11-19T06:00+09:00"
+  },
+  {
+   "id": "081-0003700950",
+   "title": "펄어비스 ‘붉은사막’ 게임대상 휩쓸었다",
+   "media": "서울신문",
+   "url": "https://www.seoul.co.kr/news/peoples/2026/11/19/20261119022008?wlog_tag3=naver",
+   "link": "https://n.news.naver.com/mnews/article/081/0003700950?sid=102",
+   "section": "지면",
+   "page": "22면",
+   "pub": "2026-11-19T06:00+09:00"
+  },
+  {
+   "id": "032-0003483887",
+   "title": "콘텐츠 업계, 한한령 드디어 끝나나 기대감…“세부 조치 나와야” 신중...",
+   "media": "경향신문",
+   "url": "https://www.khan.co.kr/article/202611192119005",
+   "link": "https://n.news.naver.com/mnews/article/032/0003483887?sid=103",
+   "section": "지면",
+   "page": "A20면",
+   "pub": "2026-11-19T22:00+09:00"
+  },
+  {
+   "id": "023-0004010653",
+   "title": "“AI 세상 속 ‘나’를 찾는 힘… 인문 속에서 듣고, 묻고, 스스로 선택...",
+   "media": "조선일보",
+   "url": "https://www.chosun.com/special/boutique/boutique-living/2026/11/20/7E3DPMGKWNFHLHU42IT43Q5ETA/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news",
+   "link": "https://n.news.naver.com/mnews/article/023/0004010653?sid=004",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-11-20T01:00+09:00"
+  },
+  {
+   "id": "025-0003566578",
+   "title": "외국인 2000만명 ‘올다무’ 즐기지만…서울에 갇혔다",
+   "media": "중앙일보",
+   "url": "https://www.joongang.co.kr/article/25480295",
+   "link": "https://n.news.naver.com/mnews/article/025/0003566578?sid=103",
+   "section": "지면",
+   "page": "A16면",
+   "pub": "2026-11-20T01:00+09:00"
+  }
+ ],
+ "printed_at": "2026-11-20T04:00:28+09:00",
  "from": "2026-11-19T07:00:00+09:00",
  "to": "2026-11-20T07:00:00+09:00",
- "updated": "11-19 19:13"
+ "updated": "11-20 04:00"
 }
