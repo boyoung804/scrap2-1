@@ -1,8 +1,39 @@
 {
  "date": "2026-11-25",
- "items": [],
- "printed_at": "2026-11-24T13:52:15+09:00",
+ "items": [
+  {
+   "id": "005-0001887190",
+   "title": "李 “사이비종교 해산 검토할 때”",
+   "media": "국민일보",
+   "url": "https://www.kmib.co.kr/article/20261124502038",
+   "link": "https://n.news.naver.com/mnews/article/005/0001887190?sid=100",
+   "section": "지면",
+   "page": "1면",
+   "pub": "2026-11-24T19:26+09:00"
+  },
+  {
+   "id": "032-0003484856",
+   "title": "이 대통령 “사이비 종교단체 해산 절차 검토를”",
+   "media": "경향신문",
+   "url": "https://www.khan.co.kr/article/202611242202005",
+   "link": "https://n.news.naver.com/mnews/article/032/0003484856?sid=100",
+   "section": "지면",
+   "page": "A1면",
+   "pub": "2026-11-24T22:26+09:00"
+  },
+  {
+   "id": "469-0000967546",
+   "title": "유승민 대한체육회장, \"축구협회 관련 FIFA 서한...체육회 정관 충돌 소...",
+   "media": "한국일보",
+   "url": "https://www.hankookilbo.com/news/article/A2026112422030000537?did=NA",
+   "link": "https://m.sports.naver.com/kfootball/article/469/0000967546",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-11-24T23:26+09:00"
+  }
+ ],
+ "printed_at": "2026-11-25T00:26:03+09:00",
  "from": "2026-11-24T07:00:00+09:00",
  "to": "2026-11-25T07:00:00+09:00",
- "updated": "11-24 13:52"
+ "updated": "11-25 00:26"
 }
