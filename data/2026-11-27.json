@@ -1,8 +1,59 @@
 {
  "date": "2026-11-27",
- "items": [],
- "printed_at": "2026-11-26T10:56:56+09:00",
+ "items": [
+  {
+   "id": "030-0003490380",
+   "title": "강유정 문체부 장관 후보자 “한중 문화교류 해빙기…민관 합동 대응”",
+   "media": "전자신문",
+   "url": "https://www.etnews.com/20261126000438",
+   "link": "https://n.news.naver.com/mnews/article/030/0003490380?sid=105",
+   "section": "지면",
+   "page": "2면",
+   "pub": "2026-11-26T15:36+09:00"
+  },
+  {
+   "id": "009-0005769588",
+   "title": "언론4법 소위통과 … 허위조작 보도 판결땐 정부광고 중단",
+   "media": "매일경제",
+   "url": "https://www.mk.co.kr/article/12219555",
+   "link": "https://n.news.naver.com/mnews/article/009/0005769588?sid=100",
+   "section": "지면",
+   "page": "A31면",
+   "pub": "2026-11-26T17:36+09:00"
+  },
+  {
+   "id": "009-0005769586",
+   "title": "\"문화계 양극화 해소하고 한중 문화교류 늘리겠다\"",
+   "media": "매일경제",
+   "url": "https://www.mk.co.kr/article/12219553",
+   "link": "https://n.news.naver.com/mnews/article/009/0005769586?sid=103",
+   "section": "지면",
+   "page": "A31면",
+   "pub": "2026-11-26T17:36+09:00"
+  },
+  {
+   "id": "015-0005358760",
+   "title": "한강 소설 ‘눈송이’, 시진핑 ‘석자 얼음’…강유정 문체부 화두 ‘해...",
+   "media": "한국경제",
+   "url": "https://www.hankyung.com/article/202611262798i",
+   "link": "https://n.news.naver.com/mnews/article/015/0005358760?sid=100",
+   "section": "온라인",
+   "page": "",
+   "pub": "2026-11-26T18:36+09:00"
+  },
+  {
+   "id": "014-0005610524",
+   "title": "\"한중 문화교류 해빙기… 후속대책 마련 최우선\"",
+   "media": "파이낸셜뉴스",
+   "url": "https://www.fnnews.com/news/202611261838381155",
+   "link": "https://n.news.naver.com/mnews/article/014/0005610524?sid=103",
+   "section": "지면",
+   "page": "25면",
+   "pub": "2026-11-26T18:39+09:00"
+  }
+ ],
+ "printed_at": "2026-11-26T19:36:19+09:00",
  "from": "2026-11-26T07:00:00+09:00",
  "to": "2026-11-27T07:00:00+09:00",
- "updated": "11-26 10:56"
+ "updated": "11-26 19:36"
 }
